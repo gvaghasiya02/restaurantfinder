@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Admin Dashboard</h1>
+    <div class="card">
+        <div class="card-body">
+            <h2>Add New Restaurant</h2>
+            <form id="addRestaurantForm">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name:</label>
+                    <input type="text" class="form-control" id="name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="address" class="form-label">Address:</label>
+                    <input type="text" class="form-control" id="address" required>
+                </div>
+                <div class="mb-3">
+                    <label for="contactInfo" class="form-label">Contact Info:</label>
+                    <input type="text" class="form-control" id="contactInfo">
+                </div>
+                <div class="mb-3">
+                    <label for="openingHours" class="form-label">Opening Hours:</label>
+                    <input type="text" class="form-control" id="openingHours">
+                </div>
+                <div class="mb-3">
+                    <label for="menu" class="form-label">Menu:</label>
+                    <textarea class="form-control" id="menu"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="cuisine" class="form-label">Cuisine:</label>
+                    <input type="text" class="form-control" id="cuisine">
+                </div>
+                <div class="mb-3">
+                    <label for="priceRange" class="form-label">Price Range (average for two):</label>
+                    <input type="number" step="0.01" class="form-control" id="priceRange">
+                </div>
+                <button type="button" class="btn btn-primary" onclick="addRestaurant()">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <h2>List of Restaurants</h2>
+        <ul id="restaurantsList" class="list-group"></ul>
+    </div>
+</div>
+
+<script>
+    function addRestaurant() {
+        const formData = {
+            name: document.getElementById('name').value,
+            address: document.getElementById('address').value,
+            contactInfo: document.getElementById('contactInfo').value,
+            openingHours: document.getElementById('openingHours').value,
+            menu: document.getElementById('menu').value,
+            cuisine: document.getElementById('cuisine').value,
+            priceRange: parseFloat(document.getElementById('priceRange').value)
+        };
+        console.log(JSON.stringify(formData));
+        fetch('/restaurants/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                alert('Restaurant added successfully!');
+                loadRestaurants(); // Refresh the list of restaurants
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error adding restaurant');
+            });
+    }
+
+    function loadRestaurants() {
+        fetch('/restaurants/')
+            .then(response => response.json())
+            .then(restaurants => {
+                const list = document.getElementById('restaurantsList');
+                list.innerHTML = ''; // Clear current list
+                restaurants.forEach(restaurant => {
+                    const item = document.createElement('li');
+                    item.classList.add('list-group-item');
+                    item.textContent = `${restaurant.name} - ${restaurant.cuisine} - ${restaurant.address}`;
+                    list.appendChild(item);
+                });
+            })
+            .catch(error => console.error('Error fetching restaurants:', error));
+    }
+
+    document.addEventListener('DOMContentLoaded', loadRestaurants);
+</script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
