@@ -31,11 +31,15 @@ public class RestaurantController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @PostMapping("/add")
+    public ResponseEntity<Restaurant> createRestaurant(@RequestBody Restaurant restaurant) {
+        Restaurant savedRestaurant = restaurantService.saveRestaurant(restaurant);
+        return ResponseEntity.ok(savedRestaurant);
+    }
+
     @GetMapping("/{restaurantId}/reviews")
     public List<Review> getReviews(@PathVariable Long restaurantId) {
         return reviewService.getReviewsByRestaurantId(restaurantId);
     }
 
-
-    // Add other endpoints as required
 }

@@ -46,8 +46,14 @@ INSERT INTO restaurants (price_range, address, contact_info, cuisine, image_url,
 (1.0, '456 Elm St, Springfield', '555-5678', 'Fast Food', 'burgerhaven.jpg', 'menu2.pdf', 'Burger Haven', 'Mon-Sun 10:00-23:00'),
 (3.0, '789 Oak St, Springfield', '555-8765', 'Sushi', 'sushiworld.jpg', 'menu3.pdf', 'Sushi World', 'Mon-Sun 12:00-21:00');
 
+-- Inserting sample data into users table
+INSERT INTO users (email, first_name, last_name, password) VALUES
+('john.doe@example.com', 'John', 'Doe', 'password123'),
+('jane.smith@example.com', 'Jane', 'Smith', 'password456'),
+('admin@example.com', 'Admin', 'User', 'adminpassword');
+
 -- Inserting sample data into reviews table
 INSERT INTO reviews (rating, restaurant_id, text, user_name) VALUES
-(5, 1, 'Amazing food and great service!', 'John'),
-(4, 2, 'Good burgers but the fries were a bit salty.', 'Jane'),
-(3, 3, 'Sushi was fresh but the wait time was long.', 'admin');
+(5, 1, 'Amazing food and great service!', 'john.doe@example.com'),
+(4, 2, 'Good burgers but the fries were a bit salty.', 'jane.smith@example.com'),
+(3, 3, 'Sushi was fresh but the wait time was long.', 'admin@example.com');
