@@ -1,5 +1,6 @@
 package com.scu.restaurantfinder.service;
 
+import com.scu.restaurantfinder.model.Restaurant;
 import com.scu.restaurantfinder.model.Review;
 import com.scu.restaurantfinder.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,10 @@ public class ReviewService {
     }
     public List<Review> getReviewsByRestaurantId(Long restaurantId) {
         return reviewRepository.findByRestaurantId(restaurantId);
+    }
+
+    public List<Review> findAllReviews() {
+        return reviewRepository.findAll();
     }
 
     // Additional methods

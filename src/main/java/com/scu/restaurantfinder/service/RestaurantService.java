@@ -26,4 +26,12 @@ public class RestaurantService {
         return restaurantRepository.save(restaurant);
     }
 
+    public void updateRatings(Long id, Double sum) {
+        Optional<Restaurant> restaurantOptional = findRestaurantById(id);
+        if (restaurantOptional.isPresent()) {
+            Restaurant restaurant = restaurantOptional.get();
+            restaurant.setAvgRating(sum);
+            restaurantRepository.save(restaurant);
+        }
+    }
 }
