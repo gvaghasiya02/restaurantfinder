@@ -19,6 +19,7 @@
         .then(response => response.json())
         .then(restaurants => {
             const list = document.getElementById('restaurantsList');
+            console.log(restaurants);
             restaurants.forEach(restaurant => {
                 const item = document.createElement('li');
                 item.classList.add('list-group-item', 'restaurant-link');
