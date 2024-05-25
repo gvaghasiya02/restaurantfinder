@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/reviews")
 public class ReviewController {
@@ -25,5 +27,9 @@ public class ReviewController {
         return ResponseEntity.ok(savedReview);
     }
 
+    @GetMapping("/{restaurantId}")
+    public List<Review> getReviews(@PathVariable Long restaurantId) {
+        return reviewService.getReviewsByRestaurantId(restaurantId);
+    }
     // More endpoints as necessary
 }

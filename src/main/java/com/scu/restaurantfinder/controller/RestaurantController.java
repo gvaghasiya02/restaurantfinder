@@ -38,10 +38,4 @@ public class RestaurantController {
         return ResponseEntity.ok(savedRestaurant);
     }
 
-    @GetMapping("/{restaurantId}/reviews")
-    public List<Review> getReviews(@PathVariable Long restaurantId) {
-        List<Review> reviews = reviewService.getReviewsByRestaurantId(restaurantId);
-        return reviews;
-    }
-
 }

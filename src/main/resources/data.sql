@@ -34,6 +34,13 @@ create table reviews (
                          primary key (id)
 );
 
+alter table users
+drop constraint if exists UK6dotkott2kjsp8vw4d0m25fb7;
+
+alter table users
+    add constraint UK6dotkott2kjsp8vw4d0m25fb7
+        unique (email);
+
 -- Adding foreign key constraints to reviews table
 alter table reviews
     add constraint FKsu8ow2q842enesfbqphjrfi5g
@@ -41,18 +48,19 @@ alter table reviews
 
 -- Inserting sample data into restaurants table
 INSERT INTO restaurants (price_range, address, contact_info, cuisine, menu, name, opening_hours) VALUES
-    (2.0, '123 Main St, Springfield', '555-1234', 'Italian', 'menu1.pdf', 'Luigis', 'Mon-Sun 11:00-22:00'),
-(1.0, '456 Elm St, Springfield', '555-5678', 'Fast Food', 'menu2.pdf', 'Burger Haven', 'Mon-Sun 10:00-23:00'),
-(3.0, '789 Oak St, Springfield', '555-8765', 'Sushi', 'menu3.pdf', 'Sushi World', 'Mon-Sun 12:00-21:00');
+                                                                                                     (2.0, '123 Main St, Springfield', '555-1234', 'Italian', 'menu1.pdf', 'Luigis', 'Mon-Sun 11:00-22:00'),
+                                                                                                     (1.0, '456 Elm St, Springfield', '555-5678', 'Fast Food', 'menu2.pdf', 'Burger Haven', 'Mon-Sun 10:00-23:00'),
+                                                                                                     (3.0, '789 Oak St, Springfield', '555-8765', 'Sushi', 'menu3.pdf', 'Sushi World', 'Mon-Sun 12:00-21:00');
 
 -- Inserting sample data into users table
 INSERT INTO users (email, first_name, last_name, password) VALUES
-('john.doe@example.com', 'John', 'Doe', 'password123'),
-('jane.smith@example.com', 'Jane', 'Smith', 'password456'),
-('admin@example.com', 'Admin', 'User', 'adminpassword');
+                                                               ('john.doe@example.com', 'John', 'Doe', 'password123'),
+                                                               ('jane.smith@example.com', 'Jane', 'Smith', 'password456'),
+                                                               ('admin@example.com', 'Admin', 'User', 'adminpassword'),
+                                                               ('gg@gg.com','gg','gg','$2a$10$iBN.dWu7SijTEeWefoG8V.c4MVAmcZiHxBcokTtNv4/sb9n5VAnIC');
 
 -- Inserting sample data into reviews table
 INSERT INTO reviews (rating, restaurant_id, text, user_name) VALUES
-(5, 1, 'Amazing food and great service!', 'john.doe@example.com'),
-(4, 2, 'Good burgers but the fries were a bit salty.', 'jane.smith@example.com'),
-(3, 3, 'Sushi was fresh but the wait time was long.', 'admin@example.com');
+                                                                 (5, 1, 'Amazing food and great service!', 'john'),
+                                                                 (4, 2, 'Good burgers but the fries were a bit salty.', 'jane'),
+                                                                 (3, 3, 'Sushi was fresh but the wait time was long.', 'admin');
