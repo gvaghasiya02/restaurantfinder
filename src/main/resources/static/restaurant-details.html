@@ -33,7 +33,7 @@
         .catch(error => console.error('Error fetching restaurant details:', error));
 
     // Fetch reviews for the restaurant
-    fetch(`/reviews/restaurant/${restaurantId}`)
+    fetch(`/reviews/${restaurantId}`)
         .then(response => response.json())
         .then(reviews => {
             const list = document.getElementById('reviewsList');
