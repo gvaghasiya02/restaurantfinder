@@ -27,7 +27,8 @@ public class SecurityConfig {
                                 "/*.html",
                                 "/restaurants/**",
                                 "/h2-console**",
-                                "/h2-console/*"
+                                "/h2-console/*",
+                                "/reviews/*"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
