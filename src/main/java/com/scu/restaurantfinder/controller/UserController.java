@@ -29,24 +29,10 @@ public class UserController {
     public ResponseEntity<?> registerUser(@RequestBody User user) {
         try {
             logger.info("Creating user: {}", user.getEmail());
-            user.setAdmin(false);
             userService.createUser(user);
             return new ResponseEntity<>("Account created successfully", HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             logger.error("Error creating user: {}", e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @PostMapping("/register-admin")
-    public ResponseEntity<String> createAdminUser(@RequestBody User adminUser) {
-        try {
-            logger.info("Creating admin user: {}", adminUser.getEmail());
-            adminUser.setAdmin(true);
-            userService.createUser(adminUser);
-            return new ResponseEntity<>("Admin account created successfully", HttpStatus.CREATED);
-        } catch (IllegalArgumentException e) {
-            logger.error("Error creating admin user: {}", e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -59,16 +45,13 @@ public class UserController {
             logger.info("User authenticated: {}", authenticatedUser.getEmail());
             return ResponseEntity.ok(Map.of(
                     "firstName", authenticatedUser.getFirstName() != null ? authenticatedUser.getFirstName() : "",
-                    "userId", authenticatedUser.getId() != null ? (""+authenticatedUser.getId()) : "",
-                    "isAdmin", authenticatedUser.getIsAdmin()
+                    "userId", authenticatedUser.getId() != null ? (""+authenticatedUser.getId()) : ""
             ));
         } else {
             logger.warn("Authentication failed for user: {}", loginRequest.getEmail());
             return new ResponseEntity<>("Invalid email or password", HttpStatus.UNAUTHORIZED);
         }
     }
-
-
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpSession session) {

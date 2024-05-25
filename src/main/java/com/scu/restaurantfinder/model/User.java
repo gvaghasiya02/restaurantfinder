@@ -21,9 +21,6 @@ public class User {
     @Column(nullable = false)
     private String lastName;
 
-    @Column(nullable = false)
-    private boolean isAdmin = false;  // Default value set here
-
     // Getters
     public Long getId() {
         return id;
@@ -46,10 +43,6 @@ public class User {
         return lastName;
     }
 
-    public boolean getIsAdmin() {  // Follow Java naming conventions for boolean getters
-        return isAdmin;
-    }
-
     // Setters
     public void setId(Long id) {
         this.id = id;
@@ -67,8 +60,5 @@ public class User {
     }
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-    public void setAdmin(boolean isAdmin) {  // Modified to accept a parameter to set the value
-        this.isAdmin = isAdmin;
     }
 }

@@ -19,10 +19,6 @@ public class SecurityConfig {
                                 "/index.html",
                                 "/create-account.html",
                                 "/user-login.html",
-                                "/admin-login.html",
-                                "/admin-create-account.html",
-                                "/admin-dashboard.html",
-                                "/application.html",
                                 "/user-profile.html",
                                 "/auth/**",
                                 "/css/**",
@@ -36,11 +32,6 @@ public class SecurityConfig {
                 .formLogin(formLogin -> formLogin
                         .loginPage("/user-login.html")
                         .defaultSuccessUrl("/index.html", true)
-                        .permitAll()
-                )
-                .formLogin(formLogin -> formLogin
-                        .loginPage("/admin-login.html")
-                        .defaultSuccessUrl("/admin-dashboard.html", true)
                         .permitAll()
                 )
                 .logout(logout -> logout

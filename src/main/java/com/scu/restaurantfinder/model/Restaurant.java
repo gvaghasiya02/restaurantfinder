@@ -16,6 +16,8 @@ public class Restaurant {
     @Column(nullable = false)
     private String address;
 
+    private String imageUrl;
+
     private String contactInfo;
     private String openingHours;
     private String menu;
@@ -29,6 +31,7 @@ public class Restaurant {
     public Long getId() { return id; }
     public String getName() { return name; }
     public String getAddress() { return address; }
+    public String getImageUrl() { return imageUrl; }
     public String getContactInfo() { return contactInfo; }
     public String getOpeningHours() { return openingHours; }
     public String getMenu() { return menu; }
@@ -40,6 +43,7 @@ public class Restaurant {
     public void setId(Long id) { this.id = id; }
     public void setName(String name) { this.name = name; }
     public void setAddress(String address) { this.address = address; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
     public void setContactInfo(String contactInfo) { this.contactInfo = contactInfo; }
     public void setOpeningHours(String openingHours) { this.openingHours = openingHours; }
     public void setMenu(String menu) { this.menu = menu; }

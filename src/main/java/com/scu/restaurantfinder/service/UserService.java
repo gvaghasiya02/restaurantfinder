@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
-    private static final String ADMIN_ACCESS_CODE = "openseseme";
 
     @Autowired
     private UserRepository userRepository;
@@ -28,7 +27,6 @@ public class UserService {
             throw new IllegalArgumentException("Email already exists");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setAdmin(user.getIsAdmin());
         return userRepository.save(user);
     }
 

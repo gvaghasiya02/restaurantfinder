@@ -28,11 +28,5 @@ public class RestaurantController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<Restaurant> createRestaurant(@RequestBody Restaurant restaurant) {
-        Restaurant savedRestaurant = restaurantService.saveRestaurant(restaurant);
-        return ResponseEntity.ok(savedRestaurant);
-    }
-
     // Add other endpoints as required
 }

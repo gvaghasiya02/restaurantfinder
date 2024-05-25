@@ -14,10 +14,14 @@ public class Review {
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 
-    @Column(nullable = false)
-    private Long userId;  // Assuming User ID from User table
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     private String text;
+
+    @Column(nullable = false)
     private int rating;  // Scale 1-5
 
     // Constructors, Getters, Setters
