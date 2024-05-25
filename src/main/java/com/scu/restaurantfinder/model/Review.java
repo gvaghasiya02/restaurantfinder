@@ -9,9 +9,8 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "restaurant_id", nullable = false)
-    private Restaurant restaurant;
+    @Column(nullable = false)
+    private Long restaurantId;
 
     @Column(nullable = false)
     private String userName;
@@ -30,13 +29,11 @@ public class Review {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public Restaurant getRestaurant() {
-        return restaurant;
+    public Long getRestaurantId() {
+        return restaurantId;
     }
-
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
+    public void setRestaurantId(Long restaurant_id) {
+        this.restaurantId = restaurant_id;
     }
 
     public String getUserName() {
@@ -45,6 +42,7 @@ public class Review {
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
 
     public String getText() {
         return text;

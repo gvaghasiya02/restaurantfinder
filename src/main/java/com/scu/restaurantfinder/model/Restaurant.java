@@ -22,8 +22,6 @@ public class Restaurant {
     private String cuisine;
     private Double priceRange;  // Assume average price for two
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Review> reviews;
 
     // Getters
     public Long getId() { return id; }
@@ -34,7 +32,6 @@ public class Restaurant {
     public String getMenu() { return menu; }
     public String getCuisine() { return cuisine; }
     public Double getPriceRange() { return priceRange; }
-    public List<Review> getReviews() { return reviews; }
 
     // Setters
     public void setId(Long id) { this.id = id; }
@@ -45,5 +42,5 @@ public class Restaurant {
     public void setMenu(String menu) { this.menu = menu; }
     public void setCuisine(String cuisine) { this.cuisine = cuisine; }
     public void setPriceRange(Double priceRange) { this.priceRange = priceRange; }
-    public void setReviews(List<Review> reviews) { this.reviews = reviews; }
+
 }

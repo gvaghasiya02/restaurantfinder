@@ -17,6 +17,7 @@ public class RestaurantController {
 
     @Autowired
     private RestaurantService restaurantService;
+    @Autowired
     private ReviewService reviewService;
 
     @GetMapping("/")
@@ -39,7 +40,8 @@ public class RestaurantController {
 
     @GetMapping("/{restaurantId}/reviews")
     public List<Review> getReviews(@PathVariable Long restaurantId) {
-        return reviewService.getReviewsByRestaurantId(restaurantId);
+        List<Review> reviews = reviewService.getReviewsByRestaurantId(restaurantId);
+        return reviews;
     }
 
 }
