@@ -2,6 +2,8 @@ package com.scu.restaurantfinder.controller;
 
 import com.scu.restaurantfinder.model.Restaurant;
 import com.scu.restaurantfinder.service.RestaurantService;
+import com.scu.restaurantfinder.model.Review;
+import com.scu.restaurantfinder.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ public class RestaurantController {
 
     @Autowired
     private RestaurantService restaurantService;
+    private ReviewService reviewService;
 
     @GetMapping("/")
     public List<Restaurant> getAllRestaurants() {
@@ -27,6 +30,12 @@ public class RestaurantController {
         return restaurant.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/{restaurantId}/reviews")
+    public List<Review> getReviews(@PathVariable Long restaurantId) {
+        return reviewService.getReviewsByRestaurantId(restaurantId);
+    }
+
 
     // Add other endpoints as required
 }

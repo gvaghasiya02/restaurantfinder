@@ -22,8 +22,5 @@ public class RestaurantService {
         return restaurantRepository.findById(id);
     }
 
-    public Restaurant saveRestaurant(Restaurant restaurant) {
-        return restaurantRepository.save(restaurant);
-    }
 
 }
