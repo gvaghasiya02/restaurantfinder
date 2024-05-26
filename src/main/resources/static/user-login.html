@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Resident Login - GoldInn House Leasing</title>
+  <title>Restaurant Finder Login</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -62,6 +62,7 @@
 
     if (response.status === 200) {
       const data = await response.json();
+      console.log(data);
       const { firstName, userId} = data;
       alert('Login successful');
       localStorage.setItem('isLoggedIn', 'true'); // Set flag in local storage
