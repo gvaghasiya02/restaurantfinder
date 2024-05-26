@@ -39,6 +39,7 @@ public class Restaurant {
     private String contactEmail;
     private String contactPhone;
     private String openingHours;
+    private String description;
     private String menu;
 
     // Getters
@@ -98,6 +99,8 @@ public class Restaurant {
         return menu;
     }
 
+    public String getDescription() { return description; }
+
     // Setters
     public void setId(Long id) {
         this.id = id;
@@ -154,4 +157,6 @@ public class Restaurant {
     public void setMenu(String menu) {
         this.menu = menu;
     }
+
+    public void setDescription(String description) { this.description = description; }
 }

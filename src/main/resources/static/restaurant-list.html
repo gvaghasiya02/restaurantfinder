@@ -56,6 +56,7 @@
             document.getElementById("application-item").style.display = "none";
             document.getElementById("user-login-nav-item").style.display = "block";
             document.getElementById("restaurantsList").style.display = "none";
+            window.location.href = `/user-login.html`;
         }
 
         fetch('/restaurants/')
@@ -70,10 +71,11 @@
                             <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="${restaurant.imageUrl}" alt="${restaurant.name}">
                             <div class="card-body">
                                 <h5 class="card-title">${restaurant.name}</h5>
-                                <p class="card-text">${restaurant.cuisine} - ${restaurant.city}, ${restaurant.state} ${restaurant.pincode}</p>
+                                <p>${restaurant.city}, ${restaurant.state} ${restaurant.pincode}</p>
+                                <p class="card-text"><b>Cuisine: </b>${restaurant.cuisine}</p>
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <small class="text-muted">Avg Rating: ${restaurant.avgRating}</small>
-                                    <small class="text-muted">Price Range: ${restaurant.priceRange}</small>
+                                    <p class="text-muted">Avg Rating: ${'★'.repeat(1)} ${restaurant.avgRating}</p>
+                                    <p class="text-muted">Price Range for Two: ${restaurant.priceRange}$</p>
                                 </div>
                                 <div class="btn-group">
                                     <button type="button" onclick="window.location.href='restaurant-details.html?id=${restaurant.id}'" class="btn btn-sm btn-outline-secondary">View</button>

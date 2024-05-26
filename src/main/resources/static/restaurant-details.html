@@ -8,10 +8,18 @@
         .card-header-image {
             background-size: cover;
             background-position: center;
-            height: 200px;
+            height: 300px; /* Increased height */
         }
         .rating-star {
             color: gold;
+        }
+        .review-item {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .review-rating {
+            font-size: 1.2em;
+            color: #ffcc00;
         }
     </style>
 </head>
@@ -45,17 +53,22 @@
 
 <div class="container mt-5">
     <div class="card">
-        <div class="card-header card-header-image" style="background-image: url('https://source.unsplash.com/1600x900/?restaurant');"></div>
+        <div class="card-header card-header-image" id="restaurantImage"></div>
         <div class="card-body">
             <h1 class="card-title" id="restaurantName"></h1>
-            <p class="card-text" id="restaurantDetails"></p>
-            <p id="restaurantContact"></p>
-            <p id="restaurantHours"></p>
-            <p id="menuLink"></p>
+            <p class="card-text" id="restaurantAddress"></p>
+            <p class="card-text" id="description"></p>
+            <p class="card-text" id="restaurantCuisine"></p>
+            <p class="card-text" id="restaurantContact"></p>
+            <p class="card-text" id="restaurantHours"></p>
+            <p class="card-text" id="priceRange"></p>
+            <p class="card-text" id="menuLink"></p>
+            <div id="avgRating"></div>
         </div>
     </div>
 
-    <h3>Reviews</h3>
+    <h3 class="mt-4">Reviews</h3>
+    <button id="addReviewButton" class="btn btn-success mb-3">Add Review</button>
     <ul id="reviewsList" class="list-group"></ul>
 </div>
 
@@ -75,6 +88,7 @@
             document.getElementById("logout-nav-item").style.display = "none";
             document.getElementById("application-item").style.display = "none";
             document.getElementById("user-login-nav-item").style.display = "block";
+            window.location.href = `/user-login.html`;
         }
 
         function getQueryParam(param) {
@@ -89,11 +103,16 @@
             .then(response => response.json())
             .then(restaurant => {
                 console.log(restaurant);
+                document.getElementById('restaurantImage').style.backgroundImage = `url('${restaurant.imageUrl}')`;
                 document.getElementById('restaurantName').textContent = restaurant.name;
-                document.getElementById('restaurantDetails').textContent = `${restaurant.cuisine} - ${restaurant.address}, ${restaurant.city}, ${restaurant.state}, ${restaurant.pincode}`;
-                document.getElementById('restaurantContact').textContent = `Email: ${restaurant.contactEmail}, Phone: ${restaurant.contactPhone}`;
-                document.getElementById('restaurantHours').textContent = `Opening Hours: ${restaurant.openingHours}`;
-                document.getElementById('menuLink').textContent = `Menu Items: ${restaurant.menu}`;
+                document.getElementById('restaurantAddress').textContent= `${restaurant.address}, ${restaurant.city}, ${restaurant.state}, ${restaurant.pincode}`;
+                document.getElementById('description').innerHTML=`<b>Description: </b>${restaurant.description}`;
+                document.getElementById('restaurantCuisine').innerHTML = `<b>Cuisine: </b>${restaurant.cuisine}`;
+                document.getElementById('restaurantContact').innerHTML = `<b>Email: </b>${restaurant.contactEmail}, <b>Phone: </b>${restaurant.contactPhone}`;
+                document.getElementById('restaurantHours').innerHTML = `<b>Opening Hours: </b>${restaurant.openingHours}`;
+                document.getElementById('menuLink').innerHTML = `Menu Items: ${restaurant.menu}`;
+                document.getElementById('priceRange').innerHTML = `Prices for Two: ${restaurant.priceRange} $`;
+                document.getElementById('avgRating').innerHTML=`<div class="review-rating">Rating: ${'★'.repeat(restaurant.avgRating)} ${restaurant.avgRating}</div>`;
             })
             .catch(error => console.error('Error fetching restaurant details:', error));
 
@@ -103,12 +122,38 @@
                 const list = document.getElementById('reviewsList');
                 reviews.forEach(review => {
                     const item = document.createElement('li');
-                    item.classList.add('list-group-item');
-                    item.innerHTML = `<strong>${review.userName}</strong>: ${review.text} <span class="rating-star">★ ${review.rating}</span>`;
+                    item.classList.add('list-group-item', 'review-item');
+                    item.innerHTML = `<div class="container mt-2">
+                        <div><h2>${review.reviewTopic}</h2></div>
+                        <div>${review.reviewContent}</div>
+                        <div class="review-rating">Rating: ${'★'.repeat(review.rating)} ${review.rating}</div>
+                        <div>-<strong>${review.userName}</strong></div>
+                        </div>`;
                     list.appendChild(item);
                 });
             })
             .catch(error => console.error('Error fetching reviews:', error));
+
+        document.getElementById('addReviewButton').addEventListener('click', function () {
+            window.location.href = `/add-review.html?restaurantId=${restaurantId}`;
+        });
+    });
+    document.getElementById("logout-button").addEventListener("click", function () {
+        fetch("/auth/logout", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }).then((response) => {
+            if (response.status === 200) {
+                localStorage.removeItem("isLoggedIn");
+                localStorage.removeItem("firstName");
+                localStorage.removeItem("userId");
+                window.location.href = "index.html";
+            } else {
+                alert("Logout failed");
+            }
+        });
     });
 </script>
 

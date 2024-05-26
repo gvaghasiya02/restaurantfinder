@@ -15,7 +15,11 @@ public class Review {
     @Column(nullable = false)
     private String userName;
 
-    private String text;
+    @Column(nullable = false)
+    private String reviewTopic;
+
+    @Column(nullable = false)
+    private String reviewContent;
 
     @Column(nullable = false)
     private int rating;  // Scale 1-5
@@ -39,17 +43,25 @@ public class Review {
     public String getUserName() {
         return userName;
     }
+
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
-
-    public String getText() {
-        return text;
+    public String getReviewTopic() {
+        return reviewTopic;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setReviewTopic(String reviewTopic) {
+        this.reviewTopic = reviewTopic;
+    }
+
+    public String getReviewContent() {
+        return reviewContent;
+    }
+
+    public void setReviewContent(String reviewContent) {
+        this.reviewContent = reviewContent;
     }
 
     public int getRating() {
