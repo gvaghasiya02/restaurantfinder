@@ -9,8 +9,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="index.html">
-        <img src="https://via.placeholder.com/32" alt="Logo">
-        Restaurant Finder
+        <img src="https://via.placeholder.com/32" alt="Logo"> Restaurant Finder
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -20,14 +19,14 @@
             <li class="nav-item">
                 <a class="nav-link" href="index.html">Home</a>
             </li>
-            <li class="nav-item" id="application-item" style="display: none;">
+            <li class="nav-item active">
                 <a class="nav-link" href="restaurant-list.html">Find Restaurants</a>
             </li>
             <li class="nav-item" id="logout-nav-item" style="display: none;">
                 <span id="user-name" class="navbar-text"></span>
                 <button class="btn btn-link nav-link" id="logout-button">Logout</button>
             </li>
-            <li class="nav-item" id="user-login-nav-item" style="display: none;">
+            <li class="nav-item" id="user-login-nav-item">
                 <a class="nav-link" href="user-login.html">User Login</a>
             </li>
         </ul>
@@ -36,6 +35,34 @@
 
 <div class="container mt-5">
     <h1>Restaurants</h1>
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search by Name, Cuisine, City, State">
+        </div>
+        <div class="col-md-2">
+            <select id="ratingSort" class="form-select">
+                <option value="">Sort by Rating</option>
+                <option value="high">High to Low</option>
+                <option value="low">Low to High</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <select id="priceSort" class="form-select">
+                <option value="">Sort by Price</option>
+                <option value="high">High to Low</option>
+                <option value="low">Low to High</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select id="ratingFilter" class="form-select">
+                <option value="">Filter by Rating</option>
+                <option value="1">1-2</option>
+                <option value="2">2-3</option>
+                <option value="3">3-4</option>
+                <option value="4">4-5</option>
+            </select>
+        </div>
+    </div>
     <div class="row" id="restaurantsList"></div>
 </div>
 
@@ -46,48 +73,106 @@
     const isLoggedIn = localStorage.getItem("isLoggedIn");
     const firstName = localStorage.getItem("firstName");
     document.addEventListener("DOMContentLoaded", function () {
+        updateLoginDisplay();
+        fetchRestaurants();
+
+        document.getElementById("searchInput").addEventListener("input", function() {
+            fetchRestaurants();
+        });
+
+        document.getElementById("ratingSort").addEventListener("change", function() {
+            fetchRestaurants();
+        });
+
+        document.getElementById("priceSort").addEventListener("change", function() {
+            fetchRestaurants();
+        });
+
+        document.getElementById("ratingFilter").addEventListener("change", function() {
+            fetchRestaurants();
+        });
+
+        document.getElementById("logout-button").addEventListener("click", function () {
+            logoutUser();
+        });
+    });
+
+    function updateLoginDisplay() {
         if (isLoggedIn === "true") {
             document.getElementById("user-name").textContent = `Hello, ${firstName}`;
             document.getElementById("logout-nav-item").style.display = "block";
-            document.getElementById("application-item").style.display = "block";
             document.getElementById("user-login-nav-item").style.display = "none";
         } else {
             document.getElementById("logout-nav-item").style.display = "none";
-            document.getElementById("application-item").style.display = "none";
             document.getElementById("user-login-nav-item").style.display = "block";
-            document.getElementById("restaurantsList").style.display = "none";
-            window.location.href = `/user-login.html`;
         }
+    }
+
+    function fetchRestaurants() {
+        const query = document.getElementById("searchInput").value.toLowerCase();
+        const ratingSort = document.getElementById("ratingSort").value;
+        const priceSort = document.getElementById("priceSort").value;
+        const ratingFilter = document.getElementById("ratingFilter").value;
 
         fetch('/restaurants/')
             .then(response => response.json())
-            .then(restaurants => {
-                const list = document.getElementById('restaurantsList');
-                restaurants.forEach(restaurant => {
-                    const col = document.createElement('div');
-                    col.className = 'col-md-4';
-                    col.innerHTML = `
-                        <div class="card mb-4 shadow-sm">
-                            <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="${restaurant.imageUrl}" alt="${restaurant.name}">
-                            <div class="card-body">
-                                <h5 class="card-title">${restaurant.name}</h5>
-                                <p>${restaurant.city}, ${restaurant.state} ${restaurant.pincode}</p>
-                                <p class="card-text"><b>Cuisine: </b>${restaurant.cuisine}</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <p class="text-muted">Avg Rating: ${'★'.repeat(1)} ${restaurant.avgRating}</p>
-                                    <p class="text-muted">Price Range for Two: ${restaurant.priceRange}$</p>
-                                </div>
-                                <div class="btn-group">
-                                    <button type="button" onclick="window.location.href='restaurant-details.html?id=${restaurant.id}'" class="btn btn-sm btn-outline-secondary">View</button>
-                                </div>
-                            </div>
-                        </div>`;
-                    list.appendChild(col);
+            .then(data => {
+                let filteredData = data.filter(restaurant => {
+                    return restaurant.name.toLowerCase().includes(query) ||
+                        restaurant.cuisine.toLowerCase().includes(query) ||
+                        restaurant.city.toLowerCase().includes(query) ||
+                        restaurant.address.toLowerCase().includes(query) ||
+                        restaurant.state.toLowerCase().includes(query);
                 });
+
+                if (ratingSort) {
+                    filteredData.sort((a, b) => (ratingSort === 'high' ? b.avgRating - a.avgRating : a.avgRating - b.avgRating));
+                }
+
+                if (priceSort) {
+                    filteredData.sort((a, b) => (priceSort === 'high' ? b.priceRange - a.priceRange : a.priceRange - b.priceRange));
+                }
+
+                if (ratingFilter) {
+                    const range = parseInt(ratingFilter);
+                    filteredData = filteredData.filter(restaurant => {
+                        return restaurant.avgRating >= range && restaurant.avgRating < range + 1;
+                    });
+                }
+
+                displayRestaurants(filteredData);
             })
             .catch(error => console.error('Error fetching restaurants:', error));
-    });
-    document.getElementById("logout-button").addEventListener("click", function () {
+    }
+
+    function displayRestaurants(restaurants) {
+        const list = document.getElementById('restaurantsList');
+        list.innerHTML = '';
+        restaurants.forEach(restaurant => {
+            const col = document.createElement('div');
+            col.className = 'col-md-4';
+            col.innerHTML = `
+                <div class="card mb-4 shadow-sm">
+                    <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="${restaurant.imageUrl}" alt="${restaurant.name}">
+                    <div class="card-body">
+                        <h5 class="card-title">${restaurant.name}</h5>
+                        <p>${restaurant.address}</p>
+                        <p>${restaurant.city}, ${restaurant.state} ${restaurant.pincode}</p>
+                        <p class="card-text"><b>Cuisine: </b>${restaurant.cuisine}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <p class="text-muted">Avg Rating: ${'★'.repeat(Math.round(restaurant.avgRating))} (${restaurant.avgRating})</p>
+                            <p class="text-muted">Price Range for Two: ${restaurant.priceRange}$</p>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" onclick="window.location.href='restaurant-details.html?id=${restaurant.id}'" class="btn btn-sm btn-outline-secondary">View</button>
+                        </div>
+                    </div>
+                </div>`;
+            list.appendChild(col);
+        });
+    }
+
+    function logoutUser() {
         fetch("/auth/logout", {
             method: "POST",
             headers: {
@@ -97,13 +182,12 @@
             if (response.status === 200) {
                 localStorage.removeItem("isLoggedIn");
                 localStorage.removeItem("firstName");
-                localStorage.removeItem("userId");
                 window.location.href = "index.html";
             } else {
                 alert("Logout failed");
             }
         });
-    });
+    }
 </script>
 
 <!-- Bootstrap JS -->
