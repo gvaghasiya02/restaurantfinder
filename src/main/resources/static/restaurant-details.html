@@ -26,26 +26,23 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <p>&nbsp;&nbsp;</p>
     <a class="navbar-brand" href="index.html">
-        <img src="https://via.placeholder.com/32" alt="Logo"> Restaurant Finder
+        <img src="images/search.png" alt="Logo">
+        Restaurant Finder
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="index.html">Home</a>
-            </li>
-            <li class="nav-item" id="application-item" style="display: none;">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item" id="application-nav-item" style="display: block;">
                 <a class="nav-link" href="restaurant-list.html">Find Restaurants</a>
             </li>
-            <li class="nav-item" id="logout-nav-item" style="display: none;">
-                <span id="user-name" class="navbar-text"></span>
-                <button class="btn btn-link nav-link" id="logout-button">Logout</button>
+            <li class="nav-item  navbar-text" id="user-name-nav-item" style="display: block">
             </li>
-            <li class="nav-item" id="user-login-nav-item">
-                <a class="nav-link" href="user-login.html">User Login</a>
+            <li class="nav-item" id="logout-nav-item" style="display: block;">
+                <button class="btn btn-link nav-link" id="logout-button">Logout</button>
             </li>
         </ul>
     </div>
@@ -80,15 +77,10 @@
     const firstName = localStorage.getItem("firstName");
     document.addEventListener("DOMContentLoaded", function () {
         if (isLoggedIn === "true") {
-            document.getElementById("user-name").textContent = `Hello, ${firstName}`;
+            document.getElementById("user-name-nav-item").textContent = `Hello, ${firstName}`;
             document.getElementById("logout-nav-item").style.display = "block";
-            document.getElementById("application-item").style.display = "block";
-            document.getElementById("user-login-nav-item").style.display = "none";
         } else {
-            document.getElementById("logout-nav-item").style.display = "none";
-            document.getElementById("application-item").style.display = "none";
-            document.getElementById("user-login-nav-item").style.display = "block";
-            window.location.href = `/user-login.html`;
+            window.location.href = "user-login.html";
         }
 
         function getQueryParam(param) {
