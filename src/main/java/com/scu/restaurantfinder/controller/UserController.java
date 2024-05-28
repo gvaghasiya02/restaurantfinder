@@ -45,6 +45,7 @@ public class UserController {
             logger.info("User authenticated: {}", authenticatedUser.getEmail());
             return ResponseEntity.ok(Map.of(
                     "firstName", authenticatedUser.getFirstName() != null ? authenticatedUser.getFirstName() : "",
+                    "lastName", authenticatedUser.getLastName() != null ? authenticatedUser.getLastName() : "",
                     "userId", authenticatedUser.getId() != null ? (""+authenticatedUser.getId()) : ""
             ));
         } else {

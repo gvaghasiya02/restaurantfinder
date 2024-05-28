@@ -4,6 +4,46 @@
     <meta charset="UTF-8">
     <title>Add Review</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card-header-image {
+            background-size: cover;
+            background-position: center;
+            height: 300px; /* Increased height */
+        }
+        .rating-star {
+            color: gold;
+        }
+        .review-item {
+            border: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .review-rating {
+            font-size: 1.2em;
+            color: #ffcc00;
+        }
+        .card-rating {
+            font-size: 1.2rem;
+            color: #ffd700; /* Gold color for ratings */
+        }
+        .card-price {
+            font-size: 1rem;
+            color: #28a745; /* Green color for price indication */
+        }
+        .card:hover {
+            transform: scale(1.03);
+            transition: transform .3s ease-in-out;
+        }
+        .review-item:hover
+        {
+            transform: scale(1.03);
+            transition: transform .3s ease-in-out;
+        }
+        .list-group
+        {
+            padding: 2px;
+        }
+
+    </style>
 </head>
 <body>
 
@@ -30,8 +70,23 @@
     </div>
 </nav>
 
-<div class="container">
-    <h2>Add Review</h2>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header card-header-image" id="restaurantImage"></div>
+        <div class="card-body">
+            <h1 class="card-title" id="restaurantName"></h1>
+            <p class="card-text" id="restaurantAddress"></p>
+            <p class="card-text" id="description"></p>
+            <p class="card-text" id="restaurantCuisine"></p>
+            <p class="card-text" id="restaurantContact"></p>
+            <p class="card-text" id="restaurantWebsite"></p>
+            <p class="card-text" id="restaurantHours"></p>
+            <p class="card-text" id="menuLink"></p>
+            <p class="card-text" id="priceRange"></p>
+            <div id="avgRating"></div>
+        </div>
+    </div>
+    <h3 class="mt-4 mb-3">Add Review</h3>
     <form id="reviewForm">
         <div class="mb-3">
             <label for="reviewTopic" class="form-label">Review Topic</label>
@@ -62,8 +117,9 @@
     document.addEventListener("DOMContentLoaded", function() {
         const isLoggedIn = localStorage.getItem("isLoggedIn");
         const firstName = localStorage.getItem("firstName");
+        const lastName= localStorage.getItem("lastName");
         if (isLoggedIn === "true") {
-            document.getElementById("user-name-nav-item").textContent = `Hello, ${firstName}`;
+            document.getElementById("user-name-nav-item").textContent = `Hello, ${firstName} ${lastName}`;
             document.getElementById("logout-nav-item").style.display = "block";
         } else {
             window.location.href = "user-login.html";
@@ -71,6 +127,24 @@
 
         const userName = localStorage.getItem('firstName'); // Assuming username is stored in localStorage
         const restaurantId = new URLSearchParams(window.location.search).get('restaurantId');
+
+        fetch(`/restaurants/${restaurantId}`)
+            .then(response => response.json())
+            .then(restaurant => {
+                console.log(restaurant);
+                document.getElementById('restaurantImage').style.backgroundImage = `url('${restaurant.imageUrl}')`;
+                document.getElementById('restaurantName').textContent = restaurant.name;
+                document.getElementById('restaurantAddress').textContent= `${restaurant.address}, ${restaurant.city}, ${restaurant.state}, ${restaurant.pincode}`;
+                document.getElementById('description').innerHTML=`<b>Description: </b>${restaurant.description}`;
+                document.getElementById('restaurantCuisine').innerHTML = `<b>Cuisine: </b>${restaurant.cuisine}`;
+                document.getElementById('restaurantContact').innerHTML = `<b>Email: </b>${restaurant.contactEmail}, <b>Phone: </b>${restaurant.contactPhone}`;
+                document.getElementById('restaurantWebsite').innerHTML = `<b>Website: </b><a href=${restaurant.website}>${restaurant.website}</a>`;
+                document.getElementById('restaurantHours').innerHTML = `<b>Opening Hours: </b>${restaurant.openingHours}`;
+                document.getElementById('menuLink').innerHTML = `<b>Menu Items: </b>${restaurant.menu}`;
+                document.getElementById('priceRange').innerHTML = `<b>Price Range: </b><span class="card-price">$${restaurant.priceRange} <small>(Approx. Price for Two)</small></span>`;
+                document.getElementById('avgRating').innerHTML=`<b>Rating: </b><span class="card-rating">★ ${restaurant.avgRating.toFixed(1)}</span>`;
+            })
+            .catch(error => console.error('Error fetching restaurant details:', error));
 
         document.getElementById('reviewForm').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -112,6 +186,7 @@
             if (response.status === 200) {
                 localStorage.removeItem("isLoggedIn");
                 localStorage.removeItem("firstName");
+                localStorage.removeItem("lastName");
                 localStorage.removeItem("userId");
                 window.location.href = "index.html";
             } else {

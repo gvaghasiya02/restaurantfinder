@@ -18,14 +18,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests  -> authorizeRequests
                         .requestMatchers(
                                 "/",
-                                "/index.html",
-                                "/create-account.html",
-                                "/user-login.html",
-                                "/user-profile.html",
+                                "/**.html",
                                 "/css/**",
                                 "/js/**",
                                 "/images/**",
-                                "/auth/**",
+                                "/auth/signin",
+                                "/auth/register",
                                 "/h2-console/**",
                                 "/**"
                         ).permitAll()

@@ -155,9 +155,10 @@
 <script>
   const isLoggedIn = localStorage.getItem("isLoggedIn");
   const firstName = localStorage.getItem("firstName");
+  const lastName= localStorage.getItem("lastName");
   document.addEventListener("DOMContentLoaded", function () {
     if (isLoggedIn === "true") {
-      document.getElementById("user-name-nav-item").textContent = `Hello, ${firstName}`;
+      document.getElementById("user-name-nav-item").textContent = `Hello, ${firstName} ${lastName}`;
       document.getElementById("user-login-nav-item").style.display = "none";
     } else {
       document.getElementById("logout-nav-item").style.display = "none";
@@ -176,6 +177,7 @@
       if (response.status === 200) {
         localStorage.removeItem("isLoggedIn");
         localStorage.removeItem("firstName");
+        localStorage.removeItem("lastName");
         localStorage.removeItem("userId");
         window.location.href = "index.html";
       } else {

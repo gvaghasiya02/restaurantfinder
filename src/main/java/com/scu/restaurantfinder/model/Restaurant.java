@@ -38,6 +38,7 @@ public class Restaurant {
 
     private String contactEmail;
     private String contactPhone;
+    private String Website;
     private String openingHours;
     private String description;
     private String menu;
@@ -101,6 +102,8 @@ public class Restaurant {
 
     public String getDescription() { return description; }
 
+    public String getWebsite() { return Website; }
+
     // Setters
     public void setId(Long id) {
         this.id = id;
@@ -159,4 +162,6 @@ public class Restaurant {
     }
 
     public void setDescription(String description) { this.description = description; }
+
+    public void setWebsite(String website) { this.Website = website; }
 }
